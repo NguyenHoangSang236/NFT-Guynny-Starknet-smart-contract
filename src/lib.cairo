@@ -32,9 +32,9 @@
 //     }
 // }
 
-use starknet::ContractAddress;
+use starknet::{ContractAddress};
 
-#[derive(Drop, Serde, Copy, PartialEq, Hash, Clone)]
+#[derive(Drop, Serde, Copy, PartialEq, Hash, Clone, starknet::Store)]
 struct AttackFigure {
     damage: u256,
     critical_chance: u16,
@@ -44,7 +44,7 @@ struct AttackFigure {
     aiming_angle: u256,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Hash)]
+#[derive(Drop, Serde, Copy, PartialEq, Hash, Clone, starknet::Store)]
 struct DefenseFigure {
     armor: u256,
     health_point: u256,
@@ -54,7 +54,7 @@ struct DefenseFigure {
     healing_speed: u16,
 }
 
-#[derive(Drop, Serde, Copy, PartialEq, Hash)]
+#[derive(Drop, Serde, Copy, PartialEq, Hash, starknet::Store)]
 struct GameItem {
     id: felt252,
     item_id: felt252,
@@ -106,7 +106,7 @@ pub trait IGameItemContract<TContractState> {
 mod GameItemContract {
     use starknet::get_caller_address;
     use core::num::traits::Zero;
-    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess, Map};
+    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess, StoragePathEntry, Map};
     use super::{AttackFigure, DefenseFigure, GameItem};
 
     #[storage]
